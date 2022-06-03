@@ -41,6 +41,9 @@ void detruire_liste_chainee(listeChainee* liste);
 listeChainee* initialisation(int valeur);
 //peut renvoyer NULL si l'alloc dynamique a echoue,
 //valeur a verifier a l'arrivee
+listeChainee* liste_chainee_vide();
+//cree une liste chainee vide
+
 int copie_liste(listeChainee lst, listeChainee *copie);
 //PRE-CONDITION : copie a besoin d'etre crée avant la fonction
 //VALEURS DE RETOUR :

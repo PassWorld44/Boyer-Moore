@@ -57,14 +57,23 @@ listeChainee* initialisation(int valeur)
 //peut renvoyer NULL si l'alloc dynamique a echoue,
 //valeur a verifier a l'arrivee
 {
-	listeChainee* liste = NULL;
-	liste = (listeChainee*)malloc(sizeof(listeChainee));
+	listeChainee* liste = liste_chainee_vide();
 
 	if(liste != NULL)
 	{
 		liste->premier_element = cree_element(valeur);
 		assert(liste->premier_element != NULL);
 	}
+
+	return liste;
+}
+
+listeChainee* liste_chainee_vide()
+//peut renvoyer NULL si l'alloc dynamique a echoue,
+//valeur a verifier a l'arrivee
+{
+	listeChainee* liste = NULL;
+	liste = (listeChainee*)malloc(sizeof(listeChainee));
 
 	return liste;
 }
