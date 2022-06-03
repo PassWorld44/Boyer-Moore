@@ -17,15 +17,15 @@ typedef struct str_listTrouves
 char* fic_to_txt(char* filepath);
 //retourne un char* contenant le texte d'un fichier entier
 
-int recherche_exaustive(char* texte, char* recherche);
+int recherche_exaustive(char* texte, char* motif);
 //retourne l'indice de la derniere 1ere occurence trouvée dans une chaine
 //recherche très (trop) exaustive
 //retourne -1 si aucune occurence du motif n'est dans le texte
 
-listeChainee* recherche_exaustive_liste(char* texte, char* recherche);
+listeChainee* recherche_exaustive_liste(char* texte, char* motif);
 //retourne une liste comptant toutes les occurences trouvees
 
-int boyer_moore_simple(char* texte, char* recherche);
+listeChainee* boyer_moore_simple(char* texte, char* motif);
 //retourne l'indice de la 1ere occurence trouvée dans une chaine
 //utulise l'algo de Boyer_Moore simple
 

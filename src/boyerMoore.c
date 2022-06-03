@@ -1,48 +1,71 @@
 #include "boyerMoore.h"
+
+int taille_fic(char* filepath)
+{
+	FILE* f = NULL;
+	int taille = 0;
+	char* ligneLue = NULL;
+
+	f = fopen(filepath, "r+");
+	assert(f != NULL && "le fichier ne s'est pas ouvert");
+
+	while(fscanf(f, "%s", ligneLue) != EOF)
+	{
+		printf("%s\n", ligneLue);
+		taille += strlen(ligneLue);
+		
+	}
+
+	fclose(f);
+
+	return taille;
+}
+
 char* fic_to_txt(char* filepath)
 {
 	FILE* f = NULL;
 	
-	char* txt = "";
+	char* txt = (char*)malloc(taille_fic(filepath) * sizeof(char));
 	char* ligneLue;
 	
 	f = fopen(filepath, "r+");
-	if(f == NULL)
-	{
-		printf("le fichier ne s'est pas ouvert");
-	}
+	assert(f != NULL && "le fichier ne s'est pas ouvert");
 
+	printf("test\n");
+	
 	while(fscanf(f, "%s", ligneLue) != EOF)
 	{
 		strcat(txt, ligneLue);
+		printf("%s\n", ligneLue);
 	}
+	
+	fclose(f);
 
 	return txt;
 }
 
-int recherche_exaustive(char* texte, char* recherche)
+int recherche_exaustive(char* texte, char* motif)
 //TODO : ajouter la gestion d'éventuels plusieurs cas
 {
 	int i = 0, j = 0;
 	int sol = -1;
 	int sizeTxt = strlen(texte); 
-	int sizeRech = strlen(recherche);
+	int sizeMotif = strlen(motif);
 
 	//trouver un meilleur nom en français pour cette variable
-	int sizeRech = strlen(recherche);
 
 	//gestion de la multiplicité des cas ?
 
-	for(int i = 0; i < sizeTxt - sizeRech ; i++)
+	for(int i = 0; i < sizeTxt - sizeMotif ; i++)
 	{
 		j = 0;
 		
-		while(j < sizeRech - 1 && texte[i+j] == recherche[j])
+		while(j < sizeMotif - 1 && texte[i+j] == motif[j])
 		// on regarde si le motif est entierent dans le texte
 		{
 			j++;
 		}
-		if(j == sizeRech)
+		if(j == sizeMotif)
 		{
 			sol = i;
 		}
@@ -51,23 +74,23 @@ int recherche_exaustive(char* texte, char* recherche)
 	return sol;
 }
 
-listeChainee* recherche_exaustive_liste(char* texte, char* recherche)
+listeChainee* recherche_exaustive_liste(char* texte, char* motif)
 {
 	int i = 0, j = 0;
 	listeChainee* sol = liste_chainee_vide();
 	int sizeTxt = strlen(texte); 
-	int sizeRech = strlen(recherche);
+	int sizeMotif = strlen(motif);
 
-	for(int i = 0; i < sizeTxt - sizeRech ; i++)
+	for(int i = 0; i < sizeTxt - sizeMotif ; i++)
 	{
 		j = 0;
 		
-		while(j < sizeRech - 1 && texte[i+j] == recherche[j])
+		while(j < sizeMotif - 1 && texte[i+j] == motif[j])
 		// on regarde si le motif est entierent dans le texte
 		{
 			j++;
 		}
-		if(j == sizeRech)
+		if(j == sizeMotif)
 		{
 			insere_noeud(sol, 0, cree_element(i));
 		}
@@ -119,7 +142,8 @@ listeChainee* boyer_moore_simple(char* texte, char* motif)
 
     while(curseur1 < tailleTexte - tailleMotif) //parcourds du texte
     {
-        for (int curseur2 = curseur1; curseur2 < curseur1 - tailleMotif; curseur2--) {
+        for (int curseur2 = curseur1; curseur2 < curseur1 - tailleMotif; curseur2--) 
+		{
             if (texte[curseur2] != motif[curseur1-curseur2])    //on procède a un saut
             {
                 curseur1 += tableauSaut[texte[curseur2]];   //ici texte[curseur2] est la lettre correpondant au saut a faire

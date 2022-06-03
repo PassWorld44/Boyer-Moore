@@ -1,13 +1,13 @@
 A faire :
 
 - code demandé :
-	- recherche exaustive : gerer la multiplicité de sols ; ne pas oublier si il y en a aucune
-	- premier algo - passage simple : finir
+	- recherche exaustive : tester
+	- premier algo - passage simple : tester
 	- 2e algo
 
 - codes supplémentaire :
 	- moteur de recherche
-	- fonctions de lecture de fichier -> plus simple et plus efficasse
+	- fonctions de lecture de fichier : a debuger (ou refaire)
 
 - pour la présentation :
 	- présentation du 1er et 2e algo

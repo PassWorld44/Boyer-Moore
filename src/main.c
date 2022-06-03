@@ -4,7 +4,7 @@
 int main()
 {
 	printf("a\n");
-	char* txt = fic_to_txt("txtEmemple.txt");
+	char* txt = fic_to_txt("txtExemple.txt");
 	printf("b\n");
 	printf("%s", txt);
 	printf("c\n");
