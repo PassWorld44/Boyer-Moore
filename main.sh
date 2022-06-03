@@ -1,2 +1,2 @@
-clean
-gcc src/boyerMoore.c src/main.c
+clear
+gcc src/modules/listeChainee.c src/boyerMoore.c src/main.c
