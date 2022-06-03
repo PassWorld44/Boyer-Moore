@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-#include "modules.listChainee.h"
+#include "listChainee.h"
 
 typedef struct str_listTrouves
 {
@@ -16,7 +16,7 @@ int recherche_exaustive(char* texte, char* recherche);
 //retourne l'indice de la 1ere occurence trouvée dans une chaine
 //recherche très (trop) exaustive
 
-int boyer_moore_simple(char* texte, char* recherche);
+listeChainee* boyer_moore_simple(char* texte, char* recherche);
 //retourne l'indice de la 1ere occurence trouvée dans une chaine
 //utulise l'algo de Boyer_Moore simple
 
