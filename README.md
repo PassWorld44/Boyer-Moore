@@ -29,3 +29,5 @@
 - concevoir un moteur de recherche utilisable pour des texte
 
 voir [la page wikipédia liée](https://fr.wikipedia.org/wiki/Algorithme_de_Boyer-Moore)
+
+et voir [ceci pour la 2e partie de l'algo](https://www.geeksforgeeks.org/boyer-moore-algorithm-good-suffix-heuristic/)
