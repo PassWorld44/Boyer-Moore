@@ -25,6 +25,7 @@ char* fic_to_txt(char* filepath)
 	FILE* f = NULL;
 	
 	char* txt = (char*)malloc(taille_fic(filepath) * sizeof(char));
+    txt[taille_fic(filepath)-1] = '\0';
 	char* ligneLue = (char*)malloc(sizeof(char) * 10000);;
 
 	printf("%d", taille_fic(filepath));
@@ -46,7 +47,7 @@ char* fic_to_txt(char* filepath)
 int recherche_exaustive(char* texte, char* motif)
 //TODO : ajouter la gestion d'éventuels plusieurs cas
 {
-	int i = 0, j = 0;
+	int j = 0;
 	int sol = -1;
 	int sizeTxt = strlen(texte); 
 	int sizeMotif = strlen(motif);
@@ -75,7 +76,7 @@ int recherche_exaustive(char* texte, char* motif)
 
 listeChainee* recherche_exaustive_liste(char* texte, char* motif)
 {
-	int i = 0, j = 0;
+	int j = 0;
 	listeChainee* sol = liste_chainee_vide();
 	int sizeTxt = strlen(texte); 
 	int sizeMotif = strlen(motif);
@@ -98,7 +99,7 @@ listeChainee* recherche_exaustive_liste(char* texte, char* motif)
 	return sol;
 }
 
-char* tableau_saut(char* motif)
+int* tableau_saut(char* motif)
 /*
  * fonction qui cree une tablea de saut avec un motif donne
  * char* motif : une chaine de caractère contenant un motif
@@ -107,7 +108,7 @@ char* tableau_saut(char* motif)
  * et la valeurs corresponds au saut a faire
  */
 {
-    char* tableau = malloc(sizeof(char)*256);  //tableau de 256, pour stocker les caractère
+    int* tableau = malloc(sizeof(int)*256);  //tableau de 256, pour stocker les caractère  SOUS FORME DE INTEGER BORDEL
     assert(tableau != NULL); // test du malloc
 
     int tailleMotif = strlen(motif);
@@ -117,9 +118,9 @@ char* tableau_saut(char* motif)
         tableau[i] = tailleMotif;
     }
 
-    for(int i = tailleMotif -1; i; i--)  //parcourds du motif, le premier caractère n'est pas affecté
+    for(int i = 0; i<tailleMotif; i++)  //parcourds du motif, le premier caractère n'est pas affecté
     {
-        tableau[(int) motif[i]] = tailleMotif - i - 1;  
+        tableau[(int) motif[i]] = tailleMotif -i -1;
 		//affectation de la distance de la fin
     }
 
@@ -134,15 +135,14 @@ listeChainee* boyer_moore_simple(char* texte, char* motif)
 	int tailleTexte = strlen(texte); //taile du texte
     int tailleMotif = strlen(motif);
 
-    char* tableauSaut = tableau_saut(motif);  //recupere le tableau de saut
+    int* tableauSaut = tableau_saut(motif);  //recupere le tableau de saut
 
     listeChainee* positions = initialisation(0); //faudra une liste vide
 
     while(curseur1 < tailleTexte - tailleMotif) //parcourds du texte
     {
 		curseur2 = curseur1;
-        while(curseur2 < curseur1 - tailleMotif && 
-				texte[curseur2] != motif[curseur1-curseur2]) 
+        while(curseur2 < curseur1 - tailleMotif && texte[curseur2] != motif[curseur1-curseur2])
 		{
 			curseur2--;
         }
