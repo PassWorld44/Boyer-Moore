@@ -27,7 +27,11 @@ listeChainee* recherche_exaustive_liste(char* texte, char* motif);
 //retourne une liste comptant toutes les occurences trouvees
 
 listeChainee* boyer_moore_simple(char* texte, char* motif);
-//retourne l'indice de la 1ere occurence trouvée dans une chaine
-//utulise l'algo de Boyer_Moore simple
+//retourne une liste chainée comportant les occurences trouvées dans une chaine
+//utilise l'algo de Boyer_Moore simple
+
+listeChainee* boyer_moore_double(char* texte, char* motif);
+//retourne une liste chainée comportant les occurences trouvées dans une chaine
+//utilise l'algo de Boyer_Moore double
 
 #endif

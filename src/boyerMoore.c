@@ -13,7 +13,6 @@ int taille_fic(char* filepath)
 	while(fgets(ligneLue, 10000, f))
 	{
 		taille += strlen(ligneLue);
-		
 	}
 
 	fclose(f);
@@ -99,7 +98,7 @@ listeChainee* recherche_exaustive_liste(char* texte, char* motif)
 	return sol;
 }
 
-int* tableau_saut(char* motif)
+char* tableau_saut(char* motif)
 /*
  * fonction qui cree une tablea de saut avec un motif donne
  * char* motif : une chaine de caractère contenant un motif
@@ -108,7 +107,7 @@ int* tableau_saut(char* motif)
  * et la valeurs corresponds au saut a faire
  */
 {
-    int* tableau = malloc(sizeof(int)*256);  //tableau de 256, pour stocker les caractère
+    char* tableau = malloc(sizeof(char)*256);  //tableau de 256, pour stocker les caractère
     assert(tableau != NULL); // test du malloc
 
     int tailleMotif = strlen(motif);
@@ -120,10 +119,8 @@ int* tableau_saut(char* motif)
 
     for(int i = tailleMotif -1; i; i--)  //parcourds du motif, le premier caractère n'est pas affecté
     {
-        if (tableau[(int) motif[i]] == tailleMotif)   // teste pour eviter les repetition
-        {
-            tableau[(int) motif[i]] = tailleMotif - i;  //affectation de la distance de la fin
-        }
+        tableau[(int) motif[i]] = tailleMotif - i - 1;  
+		//affectation de la distance de la fin
     }
 
     return tableau;
@@ -132,27 +129,40 @@ int* tableau_saut(char* motif)
 listeChainee* boyer_moore_simple(char* texte, char* motif)
 {
 	int curseur1 = 0;   //curseur qui parcours le texte
+	int curseur2;
 
 	int tailleTexte = strlen(texte); //taile du texte
     int tailleMotif = strlen(motif);
 
-    int* tableauSaut = tableau_saut(motif);  //recupere le tableau de saut
+    char* tableauSaut = tableau_saut(motif);  //recupere le tableau de saut
 
     listeChainee* positions = initialisation(0); //faudra une liste vide
 
     while(curseur1 < tailleTexte - tailleMotif) //parcourds du texte
     {
-        for (int curseur2 = curseur1; curseur2 < curseur1 - tailleMotif; curseur2--) 
+		curseur2 = curseur1;
+        while(curseur2 < curseur1 - tailleMotif && 
+				texte[curseur2] != motif[curseur1-curseur2]) 
 		{
-            if (texte[curseur2] != motif[curseur1-curseur2])    //on procède a un saut
-            {
-                curseur1 += tableauSaut[texte[curseur2]];   //ici texte[curseur2] est la lettre correpondant au saut a faire
-            }
-            if (curseur1-curseur2 == tailleMotif) //trouvé 1
-            {
-                insere_noeud(positions,0, cree_element(curseur2));  // sauvegarde de l'occurence
-            }
+			curseur2--;
         }
+		
+		if (curseur1-curseur2 == tailleMotif) //trouvé !
+        {
+                insere_noeud(positions,0, cree_element(curseur2));  // sauvegarde de l'occurence
+        }
+		else
+		{
+			curseur1 += tableauSaut[texte[curseur2]];   //ici texte[curseur2] est la lettre correpondant au saut a faire
+		}
 	}
     return positions;
 }
+
+int* tableau_saut_prefixe(char* motif)
+{
+	
+}
+
+listeChainee* boyer_moore_double(char* texte, char* motif)
+{}
