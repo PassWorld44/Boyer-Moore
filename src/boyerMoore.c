@@ -36,7 +36,7 @@ char* fic_to_txt(char* filepath)
 	while(fgets(ligneLue, 10000, f))
 	{
 		printf("%s", ligneLue);
-		strcat(txt, ligneLue);
+		strcat(txt, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
 	}
 	
 	fclose(f);
