@@ -4,14 +4,14 @@ int taille_fic(char* filepath)
 {
 	FILE* f = NULL;
 	int taille = 0;
-	char* ligneLue = NULL;
+	char* ligneLue = (char*)malloc(sizeof(char) * 10000);
 
 	f = fopen(filepath, "r+");
 	assert(f != NULL && "le fichier ne s'est pas ouvert");
 
-	while(fscanf(f, "%s", ligneLue) != EOF)
+	
+	while(fgets(ligneLue, 10000, f))
 	{
-		printf("%s\n", ligneLue);
 		taille += strlen(ligneLue);
 		
 	}
@@ -26,17 +26,17 @@ char* fic_to_txt(char* filepath)
 	FILE* f = NULL;
 	
 	char* txt = (char*)malloc(taille_fic(filepath) * sizeof(char));
-	char* ligneLue;
+	char* ligneLue = (char*)malloc(sizeof(char) * 10000);;
+
+	printf("%d", taille_fic(filepath));
 	
 	f = fopen(filepath, "r+");
 	assert(f != NULL && "le fichier ne s'est pas ouvert");
-
-	printf("test\n");
 	
-	while(fscanf(f, "%s", ligneLue) != EOF)
+	while(fgets(ligneLue, 10000, f))
 	{
+		printf("%s", ligneLue);
 		strcat(txt, ligneLue);
-		printf("%s\n", ligneLue);
 	}
 	
 	fclose(f);

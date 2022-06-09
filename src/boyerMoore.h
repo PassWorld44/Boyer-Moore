@@ -16,6 +16,7 @@ typedef struct str_listTrouves
 
 char* fic_to_txt(char* filepath);
 //retourne un char* contenant le texte d'un fichier entier
+//lit uniquement les 10 000 premiers charactères de chaque ligne
 
 int recherche_exaustive(char* texte, char* motif);
 //retourne l'indice de la derniere 1ere occurence trouvée dans une chaine
