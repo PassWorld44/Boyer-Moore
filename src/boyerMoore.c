@@ -23,24 +23,25 @@ int taille_fic(char* filepath)
 char* fic_to_txt(char* filepath)
 {
 	FILE* f = NULL;
-	
-	char* txt = (char*)malloc(taille_fic(filepath) * sizeof(char));
-    txt[taille_fic(filepath)-1] = '\0';
+
+    size_t txtTaille = taille_fic(filepath) * sizeof(char) +1;
+
+
+	char* txt = (char*)malloc(txtTaille);
+    txt[0] = '\0';
 	char* ligneLue = (char*)malloc(sizeof(char) * 10000);;
 
-	printf("%d", taille_fic(filepath));
-	
+
 	f = fopen(filepath, "r+");
 	assert(f != NULL && "le fichier ne s'est pas ouvert");
 	
 	while(fgets(ligneLue, 10000, f))
 	{
-		printf("%s", ligneLue);
-		strcat(txt, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
+		//printf("%s", ligneLue);
+        strcat_s(txt,txtTaille, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
 	}
 	
 	fclose(f);
-
 	return txt;
 }
 
