@@ -120,9 +120,9 @@ int* tableau_saut(char* motif)
         tableau[i] = tailleMotif;
     }
 
-    for(int i = 0; i<tailleMotif; i++)  //parcourds du motif, le premier caractère n'est pas affecté
+    for(int i = 0; i<tailleMotif-1; i++)  //parcourds du motif, le premier caractère n'est pas affecté
     {
-        tableau[(int) motif[i]] = tailleMotif -i -1;
+        tableau[motif[i]] = tailleMotif -i -1;
 		//affectation de la distance de la fin
     }
 
@@ -156,6 +156,7 @@ listeChainee* boyer_moore_simple(char* texte, char* motif)
 		else
 		{
 			curseur1 += tableauSaut[texte[curseur2]];   //ici texte[curseur2] est la lettre correpondant au saut a faire
+            printf(" %d ", texte[curseur2]);
 		}
 	}
 
