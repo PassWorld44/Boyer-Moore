@@ -16,9 +16,11 @@ int taille_fic(char* filepath)
 	}
 
 	fclose(f);
-
+	free(ligneLue);
+	
 	return taille;
 }
+
 
 char* fic_to_txt(char* filepath)
 {
@@ -36,25 +38,21 @@ char* fic_to_txt(char* filepath)
 	while(fgets(ligneLue, 10000, f))
 	{
 		printf("%s", ligneLue);
-		strcat(txt, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
+		strcat_s(txt, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
 	}
 	
 	fclose(f);
+	free(ligneLue);
 
 	return txt;
 }
 
 int recherche_exaustive(char* texte, char* motif)
-//TODO : ajouter la gestion d'éventuels plusieurs cas
 {
 	int j = 0;
 	int sol = -1;
 	int sizeTxt = strlen(texte); 
 	int sizeMotif = strlen(motif);
-
-	//trouver un meilleur nom en français pour cette variable
-
-	//gestion de la multiplicité des cas ?
 
 	for(int i = 0; i < sizeTxt - sizeMotif ; i++)
 	{
@@ -106,9 +104,11 @@ int* tableau_saut(char* motif)
  *
  * renoie un tableau de int, dont la position correpsonds a la chaine,
  * et la valeurs corresponds au saut a faire
+ *
+ * alloue dynamiquement le tableau revoyé
  */
 {
-    int* tableau = malloc(sizeof(int)*256);  //tableau de 256, pour stocker les caractère  SOUS FORME DE INTEGER BORDEL
+    int* tableau = malloc(sizeof(int)*256);  //tableau de 256, pour stocker les caractère
     assert(tableau != NULL); // test du malloc
 
     int tailleMotif = strlen(motif);
@@ -156,13 +156,50 @@ listeChainee* boyer_moore_simple(char* texte, char* motif)
 			curseur1 += tableauSaut[texte[curseur2]];   //ici texte[curseur2] est la lettre correpondant au saut a faire
 		}
 	}
+
+	free(tableauSaut);
+	
     return positions;
 }
 
-int* tableau_saut_prefixe(char* motif)
+int min(int a, int b)
 {
-	
+	if( a > b)
+		return b;
+	return b;
 }
+
+/*
+int* tableau_saut_suffixe(char* motif)
+// Alloue dynamiquement la variable retournee, penser a la free
+{
+	int tailleTab = min(strlen(motif), 256);
+	//une taille de 256 pour un suffixe sera largement suffisante pour faire des sauts de taille conséquente
+	int* sufTab = (int*)malloc(sizeof(int) * tailleTab);
+	bool estValide, estTrouve;
+	
+	for(int i = 0; i > taille; i++)
+	{
+		//il faut trouver le suffixe de taille i dans le début du motif
+		//possibilté d'utuliser boyer-moore récursivement
+
+		//choix ici de l'exaustif pour l'instant
+
+		estTrouve = false;
+		for(int j = taille - 2; j >= 0 && !estTrouve; j--)
+		//on cherche la derniere occurence possible
+		{
+			estValide = true;
+			for(int k = j + taille; 
+				k >= j && k >= 0 && estValide; k--)
+			{
+				if()
+			}
+		}
+	}
+
+	return prefTab;
+} */
 
 listeChainee* boyer_moore_double(char* texte, char* motif)
 {}
