@@ -164,13 +164,6 @@ listeChainee* boyer_moore_simple(char* texte, char* motif)
     return positions;
 }
 
-int min(int a, int b)
-{
-	if( a > b)
-		return b;
-	return b;
-}
-
 /*
 int* tableau_saut_suffixe(char* motif)
 // Alloue dynamiquement la variable retournee, penser a la free
