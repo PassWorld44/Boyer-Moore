@@ -104,10 +104,10 @@ int* tableau_saut(char* motif)
  * fonction qui cree une tablea de saut avec un motif donne
  * char* motif : une chaine de caractère contenant un motif
  *
- * renoie un tableau de int, dont la position correpsonds a la chaine,
- * et la valeurs corresponds au saut a faire
+ * renvoie un tableau de int, dont la position corresponds a la chaine,
+ * et la valeur corresponds au saut à faire
  *
- * alloue dynamiquement le tableau revoyé
+ * alloue dynamiquement le tableau renvoyé
  */
 {
     int* tableau = malloc(sizeof(int)*256);  //tableau de 256, pour stocker les caractère
@@ -131,32 +131,40 @@ int* tableau_saut(char* motif)
 
 listeChainee* boyer_moore_simple(char* texte, char* motif)
 {
-	int curseur1 = 0;   //curseur qui parcours le texte
-	int curseur2;
-
 	int tailleTexte = strlen(texte); //taile du texte
     int tailleMotif = strlen(motif);
 
     int* tableauSaut = tableau_saut(motif);  //recupere le tableau de saut
 
-    listeChainee* positions = initialisation(0); //faudra une liste vide
 
-    while(curseur1 < tailleTexte - tailleMotif) //parcourds du texte
+    listeChainee* positions = NULL; //
+
+    int curseur1 = tailleMotif -1;   //curseur qui parcours le texte
+    int curseur2;  //curseur qui parcourt a l'envers
+
+    while(curseur1 < tailleTexte) //parcourds du texte
     {
 		curseur2 = curseur1;
-        while(curseur2 < curseur1 - tailleMotif && texte[curseur2] != motif[curseur1-curseur2])
+        while(curseur2 > curseur1 - tailleMotif  && texte[curseur2] == motif[(tailleMotif-1) - (curseur1-curseur2)])
 		{
-			curseur2--;
+			curseur2--;  // parcours du motif a l'envers
         }
 		
 		if (curseur1-curseur2 == tailleMotif) //trouvé !
         {
-                insere_noeud(positions,0, cree_element(curseur2));  // sauvegarde de l'occurence
+            if (positions == NULL)
+            {
+                positions = initialisation(curseur2 + 1); // on init une liste chainee car elle n'existe pas
+            } else
+            {
+                insere_noeud(positions, 0, cree_element(curseur2 + 1));  // sauvegarde de l'occurence
+            }
+            curseur1 += tailleMotif; // on passe à la suite
         }
 		else
 		{
-			curseur1 += tableauSaut[texte[curseur2]];   //ici texte[curseur2] est la lettre correpondant au saut a faire
-            printf(" %d ", texte[curseur2]);
+			curseur1 += tableauSaut[abs(texte[curseur2])];   //ici texte[curseur2] est la lettre correpondant au saut a faire
+            // abs est pour passer les caractères corrompus
 		}
 	}
 
@@ -232,8 +240,8 @@ listeChainee* boyer_moore_double(char* texte, char* motif)
 
 void tests_unitaires()
 {
-	void test_tableau_saut_suffixe("ABBABAB");
-	void test_tableau_saut_suffixe("ANPANMAN");
+	test_tableau_saut_suffixe("ABBABAB");
+	test_tableau_saut_suffixe("ANPANMAN");
 }
 
 void test_tableau_saut_suffixe(char* motif)

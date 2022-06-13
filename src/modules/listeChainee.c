@@ -74,6 +74,10 @@ listeChainee* liste_chainee_vide()
 {
 	listeChainee* liste = NULL;
 	liste = (listeChainee*)malloc(sizeof(listeChainee));
+    if(liste != NULL)
+    {
+        liste->premier_element = NULL;
+    }
 
 	return liste;
 }
@@ -185,7 +189,7 @@ int insere_noeud(listeChainee* liste, int indice, noeud* elem)
 //val de retour : -1 si l'insertion a echouee
 //				  0 si l'insertion a ete effectuee avec succes
 {
-	noeud* it = acceder_element(liste, indice - 1);
+	noeud* it = acceder_element(liste, indice);
 
 	if(it == NULL)
 	{
