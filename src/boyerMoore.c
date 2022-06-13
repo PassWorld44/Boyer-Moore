@@ -1,6 +1,6 @@
 #include "boyerMoore.h"
 
-/*
+
 int taille_fic(char* filepath)
 {
 	FILE* f = NULL;
@@ -18,7 +18,7 @@ int taille_fic(char* filepath)
 
 	fclose(f);
 	free(ligneLue);
-	
+
 	return taille;
 }
 
@@ -26,21 +26,21 @@ int taille_fic(char* filepath)
 char* fic_to_txt(char* filepath)
 {
 	FILE* f = NULL;
+    size_t txtTaille = taille_fic(filepath) * sizeof(char) +1;
 
-	int taille = taille_fic(filepath);
-	char* txt = (char*)malloc(sizeof(char) * taille);
-    txt[taille_fic(filepath)-1] = '\0';
+
+	char* txt = (char*)malloc(txtTaille);
+    txt[0] = '\0';
 	char* ligneLue = (char*)malloc(sizeof(char) * 10000);;
 
-	printf("%d", taille_fic(filepath));
-	
+
 	f = fopen(filepath, "r+");
 	assert(f != NULL && "le fichier ne s'est pas ouvert");
 	
 	while(fgets(ligneLue, 10000, f))
 	{
-		printf("%s", ligneLue);
-		strcat_s(txt, taille, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
+		//printf("%s", ligneLue);
+        strcat_s(txt,txtTaille, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
 	}
 	
 	fclose(f);
@@ -48,7 +48,6 @@ char* fic_to_txt(char* filepath)
 
 	return txt;
 }
-*/
 
 int recherche_exaustive(char* texte, char* motif)
 {
@@ -121,9 +120,9 @@ int* tableau_saut(char* motif)
         tableau[i] = tailleMotif;
     }
 
-    for(int i = 0; i<tailleMotif; i++)  //parcourds du motif, le premier caractère n'est pas affecté
+    for(int i = 0; i<tailleMotif-1; i++)  //parcourds du motif, le premier caractère n'est pas affecté
     {
-        tableau[(int) motif[i]] = tailleMotif -i -1;
+        tableau[motif[i]] = tailleMotif -i -1;
 		//affectation de la distance de la fin
     }
 
@@ -157,19 +156,13 @@ listeChainee* boyer_moore_simple(char* texte, char* motif)
 		else
 		{
 			curseur1 += tableauSaut[texte[curseur2]];   //ici texte[curseur2] est la lettre correpondant au saut a faire
+            printf(" %d ", texte[curseur2]);
 		}
 	}
 
 	free(tableauSaut);
-	
-    return positions;
-}
 
-int min(int a, int b)
-{
-	if( a > b)
-		return b;
-	return a;
+    return positions;
 }
 
 int* tableau_saut_suffixe(char* motif)
