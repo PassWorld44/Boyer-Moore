@@ -1,5 +1,6 @@
 #include "boyerMoore.h"
 
+/*
 int taille_fic(char* filepath)
 {
 	FILE* f = NULL;
@@ -25,8 +26,9 @@ int taille_fic(char* filepath)
 char* fic_to_txt(char* filepath)
 {
 	FILE* f = NULL;
-	
-	char* txt = (char*)malloc(taille_fic(filepath) * sizeof(char));
+
+	int taille = taille_fic(filepath);
+	char* txt = (char*)malloc(sizeof(char) * taille);
     txt[taille_fic(filepath)-1] = '\0';
 	char* ligneLue = (char*)malloc(sizeof(char) * 10000);;
 
@@ -38,7 +40,7 @@ char* fic_to_txt(char* filepath)
 	while(fgets(ligneLue, 10000, f))
 	{
 		printf("%s", ligneLue);
-		strcat_s(txt, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
+		strcat_s(txt, taille, ligneLue); // ok  Emile le problème est la   apparament la variable txt est corrompu ici
 	}
 	
 	fclose(f);
@@ -46,6 +48,7 @@ char* fic_to_txt(char* filepath)
 
 	return txt;
 }
+*/
 
 int recherche_exaustive(char* texte, char* motif)
 {
@@ -166,10 +169,9 @@ int min(int a, int b)
 {
 	if( a > b)
 		return b;
-	return b;
+	return a;
 }
 
-/*
 int* tableau_saut_suffixe(char* motif)
 // Alloue dynamiquement la variable retournee, penser a la free
 {
@@ -177,29 +179,79 @@ int* tableau_saut_suffixe(char* motif)
 	//une taille de 256 pour un suffixe sera largement suffisante pour faire des sauts de taille conséquente
 	int* sufTab = (int*)malloc(sizeof(int) * tailleTab);
 	bool estValide, estTrouve;
-	
-	for(int i = 0; i > taille; i++)
+
+	for(int i = tailleTab - 1; i >= 0; i--)
 	{
 		//il faut trouver le suffixe de taille i dans le début du motif
 		//possibilté d'utuliser boyer-moore récursivement
 
 		//choix ici de l'exaustif pour l'instant
 
+		//printf("i = %d\n", i);
 		estTrouve = false;
-		for(int j = taille - 2; j >= 0 && !estTrouve; j--)
+		for(int j = tailleTab - 1; j >= 0 && !estTrouve; j--)
 		//on cherche la derniere occurence possible
 		{
+			
 			estValide = true;
-			for(int k = j + taille; 
-				k >= j && k >= 0 && estValide; k--)
+			//printf("j = %d\n", j);
+			for(int k = 0; k < tailleTab - i && estValide; k++)
 			{
-				if()
+				//printf("--- %c %c\n", motif[j-k], motif[tailleTab-1-k]);
+				//printf("i = %d, j = %d, k = %d\n", i, j, k);
+				if(j-k < 0)
+				{
+					//on sort, c'est normal
+					//printf("on sort\n");
+					sufTab[tailleTab - 1 - i] = tailleTab - k;
+					estTrouve = true;
+					estValide = false;
+				}
+				else if(motif[j-k] != motif[tailleTab-1-k])
+				{
+					estValide = false;
+					
+					if(k == tailleTab - i - 1)
+					{
+						sufTab[tailleTab - 1 - i] = tailleTab-1 - j;
+						//on l'a trouvé
+						//printf("trouvé\n");
+						estTrouve = true;
+					}
+					
+				}
 			}
+		}
+		if(!estTrouve)
+		{
+			sufTab[tailleTab - 1 - i] = tailleTab;
+			//on peut sauter tout le tableau
+			//printf("pas trouvé\n");
+			estTrouve = true;
 		}
 	}
 
-	return prefTab;
-} */
+	return sufTab;
+} 
 
 listeChainee* boyer_moore_double(char* texte, char* motif)
 {}
+
+void tests_unitaires()
+{
+	void test_tableau_saut_suffixe("ABBABAB");
+	void test_tableau_saut_suffixe("ANPANMAN");
+}
+
+void test_tableau_saut_suffixe(char* motif)
+{
+	printf("Calcul de la table de saut de test_tableau_saut_suffixe\n");
+	int* tabDouble = tableau_saut_suffixe(motif);
+
+	for(int i = 0; i < strlen(motif) ; i++)
+	{
+		printf("%d\n", tabDouble[i]);
+	}
+	
+	free(tabDouble);
+}

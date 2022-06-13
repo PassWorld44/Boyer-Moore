@@ -31,8 +31,13 @@ listeChainee* boyer_moore_simple(char* texte, char* motif);
 //retourne une liste chainée comportant les occurences trouvées dans une chaine
 //utilise l'algo de Boyer_Moore simple
 
+int* tableau_saut_suffixe(char* motif);
+
 listeChainee* boyer_moore_double(char* texte, char* motif);
 //retourne une liste chainée comportant les occurences trouvées dans une chaine
 //utilise l'algo de Boyer_Moore double
+
+void tests_unitaires();
+void test_tableau_saut_suffixe(char* motif);
 
 #endif
