@@ -115,16 +115,12 @@ int* tableau_saut(char* motif)
 
     int tailleMotif = strlen(motif);
 
-    for (int i = 0; i<256; i++)  // creatiotn d'un tableau de saut par défaut (saut maximal)
-    {
+    for (int i = 0; i < 256; i++)  // creatiotn d'un tableau de saut par défaut (saut maximal)
         tableau[i] = tailleMotif;
-    }
 
-    for(int i = 0; i<tailleMotif-1; i++)  //parcourds du motif, le premier caractère n'est pas affecté
-    {
+    for (int i = 0; i < tailleMotif - 1; i++)  //parcourds du motif, le premier caractère n'est pas affecté
         tableau[motif[i]] = tailleMotif -i -1;
 		//affectation de la distance de la fin
-    }
 
     return tableau;
 }
@@ -136,36 +132,29 @@ listeChainee* boyer_moore_simple(char* texte, char* motif)
 
     int* tableauSaut = tableau_saut(motif);  //recupere le tableau de saut
 
-
     listeChainee* positions = NULL; //
+    positions = initialisation(-1); // on init une liste chainee car elle n'existe pas
 
     int curseur1 = tailleMotif -1;   //curseur qui parcours le texte
     int curseur2;  //curseur qui parcourt a l'envers
 
     while(curseur1 < tailleTexte) //parcourds du texte
+    //variant/invariant : equivalent d'une boucle for
     {
 		curseur2 = curseur1;
         while(curseur2 > curseur1 - tailleMotif  && texte[curseur2] == motif[(tailleMotif-1) - (curseur1-curseur2)])
-		{
+        // invariant : entre curseur 2 et curseur 1, le motif est reconnu
+        // variant : taillemotif - (curseur 1 - curseur 2)
 			curseur2--;  // parcours du motif a l'envers
-        }
 		
 		if (curseur1-curseur2 == tailleMotif) //trouvé !
         {
-            if (positions == NULL)
-            {
-                positions = initialisation(curseur2 + 1); // on init une liste chainee car elle n'existe pas
-            } else
-            {
-                insere_noeud(positions, 0, cree_element(curseur2 + 1));  // sauvegarde de l'occurence
-            }
+            insere_noeud(positions, 0, cree_element(curseur2 + 1));  // sauvegarde de l'occurence
             curseur1 += tailleMotif; // on passe à la suite
         }
 		else
-		{
-			curseur1 += tableauSaut[abs(texte[curseur2])];   //ici texte[curseur2] est la lettre correpondant au saut a faire
+            curseur1 += tableauSaut[abs(texte[curseur2])];   //ici texte[curseur2] est la lettre correpondant au saut a faire
             // abs est pour passer les caractères corrompus
-		}
 	}
 
 	free(tableauSaut);
